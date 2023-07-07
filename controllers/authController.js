@@ -2,7 +2,6 @@ import { hashPass } from "../helpers/authHelper.js";
 import userModel from "../models/userModel.js";
 
 export const registerController = async (req, res) => {
-  console.log(req.body);
   try {
     const { name, email, password, phone, address } = req.body;
     // validation
