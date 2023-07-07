@@ -23,7 +23,7 @@ app.use("/api/v1/auth", authRoutes);
 
 // rest api
 app.get("/", (req, res) => {
-  res.send("<h1> Welcome to Food Recipe App </h1>");
+  res.send("<h1> Welcome to Food Recipe App.. </h1>");
 });
 
 // port
