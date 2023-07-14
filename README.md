@@ -1,2 +1,2 @@
 # Food-Recipe
- CSE471 Project
+Food Recipe Organizer using MERN stack and following MVC architecture
