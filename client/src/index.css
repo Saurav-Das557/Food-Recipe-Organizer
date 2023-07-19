@@ -1,7 +1,63 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+/* font-family: 'Playfair Display', serif; */
+/* font-family: 'Poppins', sans-serif; */
+/* font-family: 'Roboto', sans-serif; */
+
+.navbar {
+  font-family: "Roboto", sans-serif;
+  font-size: 17px;
+  line-height: 26px;
+  text-transform: uppercase;
+  box-shadow: 0 8px 6px -6px gray;
+  --webkit-box-shadow: 0 8px 6px -6px gray;
+  border-bottom: solid gray !important;
+}
+
+.nav-link {
+  font-weight: 300 !important;
+}
+
+.navbar-brand {
+  font-size: 30px;
+  font-family: Georgia, serif;
+  font-weight: 400;
+  color: black;
+  letter-spacing: 3px;
+}
+
+.navbar-nav .nav-link {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 5px;
+  color: #333;
+  text-decoration: none;
+}
+
+.navbar-nav .nav-link::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 2px solid black; /* Use border-bottom instead of height and background-color */
+  transform: scaleX(0); /* Set initial scaleX to 0 (invisible) */
+  transform-origin: left;
+  transition: transform 0.5s; /* Add transition for the transform property */
+}
+
+.navbar-nav .nav-link:hover::before {
+  transform: scaleX(1); /* ScaleX to 1 (visible) on hover */
+}
+
+.navbar-nav .nav-link:not(.active) {
+  color: #999; /* Replace with the lighter color of your choice */
+}
+
+
