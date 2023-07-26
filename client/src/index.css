@@ -124,9 +124,7 @@
 
 /* ============================== */
 /* =======Register Page========== */
-/* Assuming you have a CSS file linked to your React component */
 
-/* Styles for the main container */
 .register {
   display: flex;
   flex-direction: column;
@@ -182,3 +180,5 @@
 .register form .btn-primary:hover {
   background-color: #0056b3;
 }
+
+
