@@ -12,7 +12,7 @@ const Header = () => {
       token: "",
     });
     localStorage.removeItem("auth");
-    toast.success('Logout Successful')
+    toast.success("Logout Successful");
   };
   return (
     <>
@@ -44,11 +44,6 @@ const Header = () => {
                   Category
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to="/cart" className="nav-link">
-                  Favorites (0)
-                </NavLink>
-              </li>
               {!auth.user ? (
                 <>
                   <li className="nav-item">
@@ -64,6 +59,11 @@ const Header = () => {
                 </>
               ) : (
                 <>
+                  <li className="nav-item">
+                    <NavLink to="/cart" className="nav-link">
+                      Favorites (0)
+                    </NavLink>
+                  </li>
                   <li className="nav-item">
                     <NavLink
                       onClick={handleLogout}
