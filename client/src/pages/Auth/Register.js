@@ -11,6 +11,16 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [selectedQuestion, setSelectedQuestion] = useState("");
+
+  const questions = [
+    "What is your favorite color?",
+    "What is your favorite video game?",
+    "What city were you born in?",
+    // Add more questions as needed
+  ];
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -18,11 +28,11 @@ const Register = () => {
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/auth/register`,
-        { name, email, password, phone, address }
+        { name, email, password, phone, address, answer }
       );
       if (res && res.data.success) {
         toast.success(res.data && res.data.message, { duration: 2000 });
-        navigate("/login");
+        navigate("/login", { state: { selectedQuestion } });
       } else {
         toast.error(res.data.message);
       }
@@ -101,6 +111,43 @@ const Register = () => {
               required
             />
           </div>
+            <div className="mb-3 question-answer-container">
+              <label htmlFor="selectQuestion" className="form-label">
+                Select Your Question
+              </label>
+              <select
+                id="selectQuestion"
+                className="form-select"
+                value={selectedQuestion}
+                onChange={(e) => setSelectedQuestion(e.target.value)}
+                required
+              >
+                <option value="">Select a question...</option>
+                {questions.map((question, index) => (
+                  <option key={index} value={question}>
+                    {question}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="exampleInputName" className="form-label">
+                Answer of the Question
+              </label>
+              <input
+                type="text"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                className="form-control"
+                id="exampleInputAddress"
+                placeholder={
+                  selectedQuestion
+                    ? `Your answer for "${selectedQuestion}"`
+                    : "Select a question first"
+                }
+                required
+              />
+            </div>
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
