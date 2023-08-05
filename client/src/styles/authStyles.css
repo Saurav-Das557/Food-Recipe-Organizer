@@ -92,7 +92,7 @@
   padding: 5px; /* Add smaller padding to the button */
   cursor: pointer; /* Add a cursor pointer on hover */
   text-decoration: underline; /* Add an underline to make it look like a link */
-  margin-top: 10px; /* Add margin-top to create a line gap between the buttons */
+  margin-top: 0px; /* Add margin-top to create a line gap between the buttons */
 }
 
 .forgot-password-button:hover {
