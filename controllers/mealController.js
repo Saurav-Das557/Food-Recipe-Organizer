@@ -2,7 +2,6 @@ import slugify from "slugify";
 import recipeModel from "../models/recipeModel.js";
 import fs from "fs";
 import axios from "axios";
-import request from "request";
 
 export const createMealController = async (req, res) => {
   try {
