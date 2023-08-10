@@ -7,7 +7,6 @@ export const createMealController = async (req, res) => {
   try {
     const { idMeal, strMeal, slug, strCategory, strInstructions } = req.fields;
     const { strMealThumb } = req.files;
-    console.log(strMealThumb);
     // validation
     if (!idMeal) {
       return res.send({ message: "Recipe ID is required" });
@@ -47,7 +46,6 @@ export const createMealController = async (req, res) => {
       });
     }
     const recipes = new recipeModel({ ...req.fields, slug: slugify(strMeal) });
-    console.log(recipes);
     if (strMealThumb) {
       recipes.strMealThumb.data = fs.readFileSync(strMealThumb.path);
       recipes.strMealThumb.contentType = strMealThumb.type;
@@ -115,10 +113,12 @@ export const getSingleRecipeController = async (req, res) => {
   }
 };
 
-
+// get photo
 export const recipePhotoController = async (req, res) => {
   try {
-    const recipe = await recipeModel.findById(req.params.rid).select("strMealThumb");
+    const recipe = await recipeModel
+      .findById(req.params.rid)
+      .select("strMealThumb");
 
     if (!recipe.strMealThumb) {
       return res.status(404).send({
@@ -170,7 +170,93 @@ function isBufferImage(image) {
 }
 
 function isURLString(str) {
-  const urlPattern = /^(https?:\/\/)?(www\.)?([^\s.]+\.\S{2,}|localhost[\:?\d]*)\S*$/i;
+  const urlPattern =
+    /^(https?:\/\/)?(www\.)?([^\s.]+\.\S{2,}|localhost[\:?\d]*)\S*$/i;
   return urlPattern.test(str);
 }
 
+// delete recipe
+export const deleteRecipeController = async (req, res) => {
+  try {
+    const recipe = await recipeModel
+      .findByIdAndDelete(req.params.rid)
+      .select("-strMealThumb");
+    res.status(200).send({
+      success: true,
+      message: "Recipe deleted successfully",
+      recipe,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error while deleting recipe",
+      error,
+    });
+  }
+};
+
+// update recipe
+export const updateMealController = async (req, res) => {
+  try {
+    const { strCategory, strMeal } = req.fields;
+    const { strMealThumb } = req.files;
+
+    // Check if recipe with given ID exists
+    const existingRecipe = await recipeModel.findById(req.params.rid);
+
+    if (!existingRecipe) {
+      return res.send({ message: "Recipe with the given ID not found" });
+    }
+
+    // Prepare the fields to update
+    const updatedFields = {};
+
+    // If strCategory or existing strCategory is not provided, use the existing value
+    if (!strCategory && !existingRecipe.strCategory) {
+      return res.send({ message: "Recipe Category is required" });
+    } else if (strCategory) {
+      updatedFields.strCategory = strCategory;
+    }
+
+    // Check if strMeal, strInstructions, or strMealThumb exist and update them if needed
+    if (strMeal) {
+      updatedFields.strMeal = strMeal;
+      updatedFields.slug = slugify(strMeal); // Update slug if strMeal is changed
+    }
+
+    if (req.fields.strInstructions) {
+      updatedFields.strInstructions = req.fields.strInstructions;
+    }
+
+    if (strMealThumb && strMealThumb.size > 10000000) {
+      return res.send({
+        message: "Recipe Image should be less than 10mb",
+      });
+    } else if (strMealThumb) {
+      updatedFields.strMealThumb = {
+        data: fs.readFileSync(strMealThumb.path),
+        contentType: strMealThumb.type,
+      };
+    }
+
+    // Update the recipe with the updated fields
+    const updatedRecipe = await recipeModel.findByIdAndUpdate(
+      req.params.rid,
+      updatedFields,
+      { new: true }
+    );
+
+    res.status(201).send({
+      success: true,
+      message: "Recipe updated successfully",
+      recipe: updatedRecipe,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Failed to update recipe",
+    });
+  }
+};
