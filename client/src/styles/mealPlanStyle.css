@@ -1,0 +1,289 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&display=swap");
+
+body {
+  margin: 0;
+}
+
+.meal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+}
+
+.meal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("G:\D\Codes\CSE471\img\pexels-adonyi-gábor-1414651.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(7px);
+  z-index: -1;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  height: 50vh;
+  filter: none;
+}
+
+.controls input[type="number"] {
+  padding: 5px 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.controls button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.nutrients {
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background-size: auto;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+}
+
+.nutrients h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.nutrients ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nutrients li {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.meals {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.meal-card {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: white;
+  position: relative;
+}
+
+.meal-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.6);
+  opacity: 0.8;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.meal-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-family: "Roboto", sans-serif;
+}
+
+.meal-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.meal-info {
+  list-style: none;
+  padding: 0;
+}
+
+.recipe-link {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.recipe-link:hover {
+  background-color: #0056b3;
+}
+
+@media only screen and (max-width: 1024px) {
+  .meals {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nutrients ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+/* * {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f3f3f3;
+}
+
+.App {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.controls a {
+  text-decoration: none;
+  color: initial; 
+}
+
+.controls button {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: #7f21eb;
+  color: #f3f3f3;
+  border: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+}
+
+.controls button:hover {
+  background-color: #6c13d1;
+  cursor: pointer;
+}
+
+.nutrients a {
+  text-decoration: none;
+  color: initial; 
+}
+
+.nutrients a:hover {
+  background-color: #6c13d1;
+  cursor: pointer;
+}
+
+.meals a {
+  text-decoration: none;
+  color: initial;
+}
+
+.meals a:hover {
+  background-color: #6c13d1;
+  cursor: pointer;
+}
+
+section {
+  margin: 2rem 0 1rem 0;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+input {
+  text-align: center;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.nutrients ul {
+  display: flex;
+  width: 35rem;
+  justify-content: space-evenly;
+}
+
+.meals {
+  display: flex;
+}
+
+img {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+article {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  margin: 0 1rem;
+  max-width: 300px;
+  box-shadow: 0 4px 8px 2px rgba(77, 77, 77, 0.15);
+}
+
+ul {
+  list-style: none;
+}
+
+.instructions {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+@media only screen and (max-width: 1024px) {
+  .meals {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nutrients ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+} */

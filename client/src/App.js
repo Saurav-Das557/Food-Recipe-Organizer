@@ -15,6 +15,7 @@ import CreateRecipe from "./pages/Admin/CreateRecipe";
 import Users from "./pages/Admin/Users";
 import Profile from "./pages/user/Profile";
 import UserCreateRecipe from "./pages/user/UserCreateRecipe";
+import MealPlan from "./pages/mealPlan";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="admin/users" element={<Users />} />
         </Route>
         <Route path="/about" element={<About />} />
+        <Route path="/mealplan" element={<MealPlan />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

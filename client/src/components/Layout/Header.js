@@ -44,6 +44,7 @@ const Header = () => {
                   Category
                 </NavLink>
               </li>
+
               {!auth.user ? (
                 <>
                   <li className="nav-item">
@@ -59,6 +60,11 @@ const Header = () => {
                 </>
               ) : (
                 <>
+                  <li className="nav-item">
+                    <NavLink to="/MealPlan" className="nav-link">
+                      Meal Plan
+                    </NavLink>
+                  </li>
                   <li className="nav-item">
                     <NavLink to="/favorites" className="nav-link">
                       Favorites (0)
