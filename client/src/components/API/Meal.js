@@ -32,7 +32,7 @@ const Meal = ({ meal }) => {
         <li>Preparation time: {meal.readyInMinutes} minutes</li>
         <li>Number of servings: {meal.servings}</li>
       </ul>
-      <a className="recipe-link" href={meal.sourceUrl}>
+      <a className="recipe-link" href={meal.sourceUrl} target="_blank">
         Go to Recipe
       </a>
     </article>

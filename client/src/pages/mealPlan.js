@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Layout from "../components/Layout/Layout";
 import MealList from "../components/API/MealList";
 import "../styles/mealPlanStyle.css";
+import { motion } from "framer-motion";
 
 const MealPlan = () => {
   const [mealData, setMealData] = useState(null);
@@ -32,24 +33,31 @@ const MealPlan = () => {
 
   return (
     <Layout>
-      <div className="meal">
-        <section className="controls">
-          <input
-            type="number"
-            placeholder="Calories"
-            onChange={handleCaloriesChange}
-          />
-          <input
-            type="number"
-            placeholder="No. of recipes, max 3"
-            onChange={handleChange}
-          />
-          <button onClick={getMealData}>Get Daily Meal Plan</button>
-        </section>
-        <div className="meal-list">
-          {mealData && <MealList mealData={mealData} />}
+      <motion.div
+        animate={{ opacity: 1 }}
+        initial={{ opacity: 0 }}
+        exits={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="meal">
+          <section className="controls">
+            <input
+              type="number"
+              placeholder="Calories"
+              onChange={handleCaloriesChange}
+            />
+            <input
+              type="number"
+              placeholder="No. of recipes, max 3"
+              onChange={handleChange}
+            />
+            <button onClick={getMealData}>Get Daily Meal Plan</button>
+          </section>
+          <div className="meal-list">
+            {mealData && <MealList mealData={mealData} />}
+          </div>
         </div>
-      </div>
+      </motion.div>
     </Layout>
   );
 };
