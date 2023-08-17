@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/Layout/AdminMenu";
 import axios from "axios";
@@ -8,8 +8,10 @@ import { Select } from "antd";
 
 const { Option } = Select;
 
-const CreateRecipe = () => {
+const UpdateRecipe = () => {
   const navigate = useNavigate();
+  const params = useParams();
+
   const [categories, setCategories] = useState([]);
   const [idMeal, setidMeal] = useState("");
   const [strMeal, setstrMeal] = useState("");
@@ -20,13 +22,40 @@ const CreateRecipe = () => {
   const [strYoutube, setstrYoutube] = useState("");
   const [strIngredientCount, setStrIngredientCount] = useState(0);
   const [ingredients, setIngredients] = useState([]);
+  const [id, setId] = useState("");
 
+  //get single recipe
+  const getSingleRecipe = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/meal/get-meal/${params.slug}`
+      );
+      setId(data.recipe._id);
+      setstrMeal(data.recipe.strMeal);
+      setidMeal(data.recipe.idMeal);
+      setstrInstructions(data.recipe.strInstructions);
+      setstrCategory(data.recipe.strCategory._id);
+      if (data.recipe.strArea) {
+        setstrArea(data.recipe.strArea);
+      }
+      if (data.recipe.strYoutube) {
+        setstrYoutube(data.recipe.strYoutube);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
+  useEffect(() => {
+    getSingleRecipe();
+  }, []);
   //get all cat
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/category/get-category`
       );
+
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -64,16 +93,15 @@ const CreateRecipe = () => {
     ));
   };
 
-  const handleCreate = async (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     try {
       const recipeData = new FormData();
       recipeData.append("idMeal", idMeal);
       recipeData.append("strMeal", strMeal);
       recipeData.append("strCategory", strCategory);
-      if (strMealThumb) {
-        recipeData.append("strMealThumb", strMealThumb);
-      }
+      strMealThumb && recipeData.append("strMealThumb", strMealThumb);
+
       if (strArea) {
         recipeData.append("strArea", strArea);
       }
@@ -88,18 +116,35 @@ const CreateRecipe = () => {
         }
       });
 
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_API}/api/v1/meal/create-meal`,
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API}/api/v1/meal/update-meal/${id}`,
         recipeData
       );
       console.log(data);
       if (data?.success) {
-        toast.success("Recipe created successfully");
+        toast.success("Recipe updated successfully");
         navigate("/dashboard/admin/recipes");
         // Reset all the form fields here
       } else {
         toast.error("Recipe creation failed");
       }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
+
+  // delete recipe
+  const handleDelete = async () => {
+    let answer;
+    answer = window.prompt("Are you sure you want to delete this item?");
+    if (!answer) return;
+    try {
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_API}/api/v1/meal/delete-meal/${id}`
+      );
+      toast.success("Recipe Deleted");
+      navigate("/dashboard/admin/recipes");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
@@ -114,7 +159,7 @@ const CreateRecipe = () => {
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1>Create Recipe</h1>
+            <h1>Update Recipe</h1>
             <div className="m-1 w-75">
               <Select
                 bordered={false}
@@ -125,6 +170,7 @@ const CreateRecipe = () => {
                 onChange={(value) => {
                   setstrCategory(value);
                 }}
+                value={strCategory}
               >
                 {categories?.map((c) => (
                   <Option key={c._id} value={c._id}>
@@ -153,10 +199,19 @@ const CreateRecipe = () => {
                 )}
               </div>
               <div className="mb-3">
-                {strMealThumb && (
+                {strMealThumb ? (
                   <div className="text-center">
                     <img
                       src={URL.createObjectURL(strMealThumb)}
+                      alt="Recipe_photo"
+                      height={"200px"}
+                      className="img img-responsive"
+                    />
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <img
+                      src={`${process.env.REACT_APP_API}/api/v1/meal/meal-photo/${id}`}
                       alt="Recipe_photo"
                       height={"200px"}
                       className="img img-responsive"
@@ -224,15 +279,17 @@ const CreateRecipe = () => {
                       {`${count} Ingredients`}
                     </Option>
                   ))}
-                  {/* <Option key={0} value={0}>
-                    0 Ingredients
-                  </Option> */}
                 </Select>
                 {strIngredientCount > 0 && renderIngredientInputs()}
               </div>
               <div className="mb-3">
-                <button className="btn btn-primary" onClick={handleCreate}>
-                  Create Recipe
+                <button className="btn btn-primary" onClick={handleUpdate}>
+                  Update Recipe
+                </button>
+              </div>
+              <div className="mb-3">
+                <button className="btn btn-danger" onClick={handleDelete}>
+                  Delete Recipe
                 </button>
               </div>
             </div>
@@ -243,4 +300,4 @@ const CreateRecipe = () => {
   );
 };
 
-export default CreateRecipe;
+export default UpdateRecipe;

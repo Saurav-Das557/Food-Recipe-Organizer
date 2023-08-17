@@ -20,6 +20,8 @@ import { AnimatePresence } from "framer-motion";
 import Cuisine from "./pages/Cuisine";
 import Searched from "./pages/Searched";
 import Recipe from "./pages/Recipe";
+import Recipes from "./pages/Admin/Recipes";
+import UpdateRecipe from "./pages/Admin/UpdateRecipe";
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
             <Route path="admin" element={<AdminDashboard />} />
             <Route path="admin/create-category" element={<CreateCategory />} />
             <Route path="admin/create-recipe" element={<CreateRecipe />} />
+            <Route path="admin/recipes" element={<Recipes />} />
+            <Route path="admin/recipes/:slug" element={<UpdateRecipe />} />
             <Route path="admin/users" element={<Users />} />
           </Route>
           <Route path="/about" element={<About />} />
