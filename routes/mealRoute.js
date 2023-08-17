@@ -41,6 +41,6 @@ router.get("/get-meal/:slug", getSingleRecipeController);
 router.get("/meal-photo/:rid", recipePhotoController);
 
 //delete recipe photo
-router.get("/delete-meal/:rid", deleteRecipeController);
+router.delete("/delete-meal/:rid", deleteRecipeController);
 
 export default router;

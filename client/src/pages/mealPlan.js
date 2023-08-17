@@ -7,14 +7,14 @@ import { motion } from "framer-motion";
 const MealPlan = () => {
   const [mealData, setMealData] = useState(null);
   const [calories, setCalories] = useState(2000);
-  const [recipesToShow, setRecipesToShow] = useState(3); // Default value
+  const [recipesToShow, setRecipesToShow] = useState(3);
 
   const handleChange = (e) => {
-    setRecipesToShow(parseInt(e.target.value)); // Convert input to a number
+    setRecipesToShow(parseInt(e.target.value));
   };
 
   const handleCaloriesChange = (e) => {
-    setCalories(parseInt(e.target.value)); // Convert input to a number
+    setCalories(parseInt(e.target.value));
   };
 
   const getMealData = () => {

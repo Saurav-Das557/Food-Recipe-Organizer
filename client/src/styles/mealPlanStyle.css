@@ -4,6 +4,11 @@ body {
   margin: 0;
 }
 
+html,
+body {
+  height: auto;
+}
+
 .meal {
   display: flex;
   flex-direction: column;
