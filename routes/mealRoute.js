@@ -5,6 +5,9 @@ import {
   deleteRecipeController,
   getRecipeController,
   getSingleRecipeController,
+  recipeCountController,
+  recipeFilterController,
+  recipeListController,
   recipePhotoController,
   updateMealController,
 } from "../controllers/mealController.js";
@@ -42,5 +45,14 @@ router.get("/meal-photo/:rid", recipePhotoController);
 
 //delete recipe photo
 router.delete("/delete-meal/:rid", deleteRecipeController);
+
+//filter recipe
+router.post("/recipe-filter", recipeFilterController);
+
+// recipe count
+router.get("/recipe-count", recipeCountController);
+
+// recipe per page
+router.get("/recipe-list/:page", recipeListController);
 
 export default router;

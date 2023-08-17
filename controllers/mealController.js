@@ -212,14 +212,12 @@ export const updateMealController = async (req, res) => {
     // Prepare the fields to update
     const updatedFields = {};
 
-    // If strCategory or existing strCategory is not provided, use the existing value
     if (!strCategory && !existingRecipe.strCategory) {
       return res.send({ message: "Recipe Category is required" });
     } else if (strCategory) {
       updatedFields.strCategory = strCategory;
     }
 
-    // Check if strMeal, strInstructions, or strMealThumb exist and update them if needed
     if (strMeal) {
       updatedFields.strMeal = strMeal;
       updatedFields.slug = slugify(strMeal); // Update slug if strMeal is changed
@@ -257,6 +255,70 @@ export const updateMealController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Failed to update recipe",
+    });
+  }
+};
+
+// filter recipe controller
+export const recipeFilterController = async (req, res) => {
+  try {
+    const { checked, radio } = req.body;
+    let args = {};
+    if (checked.length > 0) args.strCategory = checked;
+    if (radio.length) args.strArea = radio[0];
+    const recipes = await recipeModel.find(args);
+    res.status(200).send({
+      success: true,
+      recipes,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error while filtering recipe",
+      error,
+    });
+  }
+};
+
+// recipe count
+export const recipeCountController = async (req, res) => {
+  try {
+    const total = await recipeModel.find({}).estimatedDocumentCount();
+    res.status(200).send({
+      success: true,
+      total,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error counting recipes",
+      error,
+    });
+  }
+};
+
+export const recipeListController = async (req, res) => {
+  try {
+    const perPage = 8;
+    const page = req.params.page ? req.params.page : 1;
+    const recipes = await recipeModel
+      .find({})
+      .select("-strMealThumb")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .sort({ createdAt: -1 });
+    res.status(200).send({
+      success: true,
+      recipes,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error in showing recipe list",
+      error,
     });
   }
 };

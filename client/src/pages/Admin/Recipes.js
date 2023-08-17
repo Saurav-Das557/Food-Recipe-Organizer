@@ -39,14 +39,16 @@ const Recipes = () => {
                 to={`/dashboard/admin/recipes/${r.slug}`}
                 className="custom-card m-2"
               >
-                <img
-                  src={`${process.env.REACT_APP_API}/api/v1/meal/meal-photo/${r._id}`}
-                  className="card-img-top"
-                  alt={r.strMeal}
-                />
-                <div className="card-body">
-                  <h5 className="card-title">{r.strMeal}</h5>
-                  <p className="card-text">{r.strInstructions}</p>
+                <div className="custom-card m-2" style={{ width: "18rem" }}>
+                  <img
+                    src={`${process.env.REACT_APP_API}/api/v1/meal/meal-photo/${r._id}`}
+                    className="card-img-top"
+                    alt={r.strMeal}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{r.strMeal}</h5>
+                    <p className="card-text">{r.strInstructions}</p>
+                  </div>
                 </div>
               </Link>
             ))}

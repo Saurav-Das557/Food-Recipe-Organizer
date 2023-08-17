@@ -22,6 +22,7 @@ import Searched from "./pages/Searched";
 import Recipe from "./pages/Recipe";
 import Recipes from "./pages/Admin/Recipes";
 import UpdateRecipe from "./pages/Admin/UpdateRecipe";
+import OwnRecipes from "./pages/OwnRecipes";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
           </Route>
           <Route path="/about" element={<About />} />
           <Route path="/mealplan" element={<MealPlan />} />
+          <Route path="/recipes" element={<OwnRecipes />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
