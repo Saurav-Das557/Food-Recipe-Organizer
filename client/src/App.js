@@ -23,6 +23,8 @@ import Recipe from "./pages/Recipe";
 import Recipes from "./pages/Admin/Recipes";
 import UpdateRecipe from "./pages/Admin/UpdateRecipe";
 import OwnRecipes from "./pages/OwnRecipes";
+import MealSearch from "./pages/MealSearch";
+import RecipeDetails from "./pages/RecipeDetails";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/recipe/:slug" element={<RecipeDetails />} />
+          <Route path="/search" element={<MealSearch />} />
           <Route path="/cuisine/:type" element={<Cuisine />} />
           <Route path="/searched/:search" element={<Searched />} />
           <Route path="/recipe/:name" element={<Recipe />} />

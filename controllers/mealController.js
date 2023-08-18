@@ -301,14 +301,14 @@ export const recipeCountController = async (req, res) => {
 
 export const recipeListController = async (req, res) => {
   try {
-    const perPage = 8;
+    const perPage = 9;
     const page = req.params.page ? req.params.page : 1;
     const recipes = await recipeModel
       .find({})
       .select("-strMealThumb")
       .skip((page - 1) * perPage)
-      .limit(perPage)
-      .sort({ createdAt: -1 });
+      .limit(perPage);
+    // .sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       recipes,
@@ -318,6 +318,55 @@ export const recipeListController = async (req, res) => {
     res.status(400).send({
       success: false,
       message: "Error in showing recipe list",
+      error,
+    });
+  }
+};
+
+// search recipe
+export const searchRecipeController = async (req, res) => {
+  try {
+    const { keyword } = req.params;
+    const result = await recipeModel
+      .find({
+        $or: [
+          { strMeal: { $regex: keyword, $options: "i" } },
+          { strInstructions: { $regex: keyword, $options: "i" } },
+        ],
+      })
+      .select("-strMealThumb");
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error while searching recipe",
+      error,
+    });
+  }
+};
+
+// similar recipe controller
+export const similarRecipeController = async (req, res) => {
+  try {
+    const { rid, cid } = req.params;
+    const recipes = await recipeModel
+      .find({
+        strCategory: cid,
+        _id: { $ne: rid },
+      })
+      .select("-strMealThumb")
+      .limit(6)
+      .populate("strCategory");
+    res.status(200).send({
+      success: true,
+      recipes,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error while generating similar recipes",
       error,
     });
   }

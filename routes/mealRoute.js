@@ -9,6 +9,8 @@ import {
   recipeFilterController,
   recipeListController,
   recipePhotoController,
+  searchRecipeController,
+  similarRecipeController,
   updateMealController,
 } from "../controllers/mealController.js";
 import formidable from "express-formidable";
@@ -54,5 +56,12 @@ router.get("/recipe-count", recipeCountController);
 
 // recipe per page
 router.get("/recipe-list/:page", recipeListController);
+
+// search recipe
+router.get("/search-recipe/:keyword", searchRecipeController);
+
+// similar recipe
+router.get("/search-recipe", searchRecipeController);
+router.get("/similar-recipe/:rid/:cid", similarRecipeController);
 
 export default router;

@@ -148,3 +148,79 @@ a {
 .pnf-btn:hover {
   background-color: #09330e; /* Darker blue on button hover */
 }
+
+.ownRecipe {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0px;
+  margin: 0%;
+}
+
+.ownRecipe .col-md-3 {
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.ownRecipe .col-md-9 {
+  padding: 20px;
+}
+
+.ownRecipe h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.ownRecipe .custom-recipe-card {
+  width: calc(33.33% - 20px);
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  margin-right: 20px; /* Add spacing between cards */
+}
+
+.ownRecipe .custom-recipe-card:last-child {
+  margin-right: 0; /* Remove spacing from last card in a row */
+}
+
+.ownRecipe .custom-recipe-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.ownRecipe .card-body {
+  padding: 15px;
+}
+
+.ownRecipe .card-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.ownRecipe .card-text {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.ownRecipe .btn-primary,
+.ownRecipe .btn-secondary {
+  font-size: 14px;
+  padding: 5px 10px;
+  margin-top: 10px;
+}
+
+.ownRecipe .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.ownRecipe .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+}
