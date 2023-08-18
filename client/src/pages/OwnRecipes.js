@@ -189,7 +189,7 @@ const OwnRecipes = () => {
             <div className="m-2 p-3">
               {recipes && recipes.length < total && (
                 <button
-                  className="btn btn-warning"
+                  className="btn btn-warning text-center"
                   onClick={(e) => {
                     e.preventDefault();
                     setPage(page + 1);

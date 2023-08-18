@@ -327,14 +327,34 @@ export const recipeListController = async (req, res) => {
 export const searchRecipeController = async (req, res) => {
   try {
     const { keyword } = req.params;
-    const result = await recipeModel
-      .find({
-        $or: [
-          { strMeal: { $regex: keyword, $options: "i" } },
-          { strInstructions: { $regex: keyword, $options: "i" } },
-        ],
-      })
-      .select("-strMealThumb");
+
+    // Split the keyword by space to get an array of individual ingredients
+    const ingredientArray = keyword ? keyword.split(" ") : [];
+
+    // Build the query for ingredients
+    const ingredientQueries = ingredientArray.map((ingredient) => {
+      return {
+        $or: Array.from({ length: 20 }, (_, index) => ({
+          [`strIngredient${index + 1}`]: {
+            $regex: ingredient.trim(),
+            $options: "i",
+          },
+        })),
+      };
+    });
+
+    // Query for keyword search
+    const keywordQuery = [
+      { strMeal: { $regex: keyword, $options: "i" } },
+      { strInstructions: { $regex: keyword, $options: "i" } },
+    ];
+
+    // Final query
+    const query = {
+      $or: [...keywordQuery, { $and: ingredientQueries }],
+    };
+
+    const result = await recipeModel.find(query).select("-strMealThumb");
     res.json(result);
   } catch (error) {
     console.log(error);

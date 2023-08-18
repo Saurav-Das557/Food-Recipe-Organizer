@@ -23,7 +23,7 @@ const SearchInput = () => {
       <input
         className="form-control me-2"
         type="search"
-        placeholder="Search"
+        placeholder="Search by recipe name, instruction keyword, or space separated ingredients"
         aria-label="Search"
         value={values.keyword}
         onChange={(e) => setValues({ ...values, keyword: e.target.value })}
