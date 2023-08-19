@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import ReviewForm from "../components/Form/reviewForm";
 import toast from "react-hot-toast";
+import { useFavorite } from "../context/favorites";
 
 const RecipeContainer = styled.div`
   display: flex;
@@ -35,6 +36,7 @@ const IngredientList = styled.ul`
 `;
 
 const RecipeDetails = () => {
+  const [fav, setFav] = useFavorite();
   const params = useParams();
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState({});
@@ -144,7 +146,7 @@ const RecipeDetails = () => {
           {recipe.strSource && (
             <h6>Source of this Recipe: {recipe.strSource}</h6>
           )}
-          <button class="btn btn-secondary ms-1">Add to favorites</button>
+          <button class="btn btn-secondary ms-1" >Add to favorites</button>
         </TextContainer>
       </RecipeContainer>
       <hr />
@@ -157,7 +159,8 @@ const RecipeDetails = () => {
           {showReviewForm && <ReviewForm handleSubmit={submitReview} />}
         </div>
         <div className="row">
-          <h6>Reviews</h6>
+          <h6 className="reviews-heading">Reviews</h6>
+
           {reviews.map((review) => {
             const createdAt = new Date(review.createdAt);
             const currentTime = new Date();
@@ -176,8 +179,31 @@ const RecipeDetails = () => {
 
             return (
               <div key={review._id} className="review">
-                <p>Rating: {review.rating} out of 10</p>
-                <p>Comment: {review.text}</p>
+                <p>
+                  <span
+                    style={{
+                      color: "blue",
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                    }}
+                  >
+                    Rating:
+                  </span>{" "}
+                  {review.rating} out of 10
+                </p>
+                <p>
+                  <span
+                    style={{
+                      color: "blue",
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                    }}
+                  >
+                    Comment:
+                  </span>{" "}
+                  {review.text}
+                </p>
+
                 <p className="review-time">{timeAgo}</p>
                 <hr />
               </div>
@@ -210,7 +236,19 @@ const RecipeDetails = () => {
                 >
                   See Details
                 </button>
-                <button class="btn btn-secondary ms-1">Add to favorites</button>
+                <button
+                  class="btn btn-secondary ms-1"
+                  onClick={() => {
+                    setFav([...fav, r]);
+                    localStorage.setItem(
+                      "favourites",
+                      JSON.stringify([...fav, r])
+                    );
+                    toast.success("Recipe added to favorites");
+                  }}
+                >
+                  Add to favorites
+                </button>
               </div>
             </div>
           ))}

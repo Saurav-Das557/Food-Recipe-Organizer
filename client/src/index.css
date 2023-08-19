@@ -235,7 +235,7 @@ a {
 }
 
 .review-section h6 {
-  font-size: 18px;
+  font-size: 25px;
   margin-bottom: 10px;
 }
 
@@ -340,7 +340,6 @@ a {
 }
 
 .btn-primary {
-  width: 100%;
   padding: 10px;
   background-color: #007bff;
   border: none;
@@ -353,3 +352,13 @@ a {
 .btn-primary:hover {
   background-color: #0056b3;
 }
+
+.reviews-heading {
+  color: #333;
+  font-weight: bold;
+  border-bottom: 2px solid #f1f1f1;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+

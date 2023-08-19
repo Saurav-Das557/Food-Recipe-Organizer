@@ -38,7 +38,7 @@ function App() {
           <Route path="/favorites" element={<FavoritePage />} />
           <Route path="/cuisine/:type" element={<Cuisine />} />
           <Route path="/searched/:search" element={<Searched />} />
-          <Route path="/recipe/:name" element={<Recipe />} />
+          <Route path="/recipe-api/:name" element={<Recipe />} />
           <Route path="/dashboard" element={<PrivateRoute />}>
             <Route path="user" element={<Dashboard />} />
             <Route path="user/profile" element={<Profile />} />

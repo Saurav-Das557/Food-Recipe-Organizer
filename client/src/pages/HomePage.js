@@ -1,6 +1,5 @@
 import React from "react";
 import Layout from "./../components/Layout/Layout";
-import { useAuth } from "../context/Auth";
 import Category from "../components/API/Category";
 import Search from "../components/API/Search";
 import Popular from "../components/API/Popular";
@@ -8,7 +7,6 @@ import { motion } from "framer-motion";
 import Vegetable from "../components/API/Vegetable";
 
 const HomePage = () => {
-  const [auth, setAuth] = useAuth();
   return (
     <Layout>
       <motion.div

@@ -8,6 +8,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useFavorite } from "../context/favorites";
 import toast from "react-hot-toast";
 
+
 const OwnRecipes = () => {
   const navigate = useNavigate();
   const [fav, setFav] = useFavorite();
@@ -18,7 +19,6 @@ const OwnRecipes = () => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  // ****** need to fix style main margin 5% 10% *********
 
   //get all cat
   const getAllCategory = async () => {

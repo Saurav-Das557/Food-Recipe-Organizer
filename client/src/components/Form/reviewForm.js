@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const ReviewForm = ({ handleSubmit }) => {
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState();
   const [text, setText] = useState("");
 
   const submitReview = (e) => {
@@ -21,6 +21,9 @@ const ReviewForm = ({ handleSubmit }) => {
           className="form-control"
           value={rating}
           onChange={(e) => setRating(e.target.value)}
+          min={1}
+          max={10}
+          placeholder="Rate this recipe from 1 to 10"
         />
       </div>
       <div className="mb-3">
@@ -29,10 +32,11 @@ const ReviewForm = ({ handleSubmit }) => {
           className="form-control"
           value={text}
           onChange={(e) => setText(e.target.value)}
+          placeholder="Share your thoughts on this recipe"
         ></textarea>
       </div>
 
-      <button type="submit" className="btn btn-primary mb-3">
+      <button type="submit" className="btn btn-success mb-3">
         Submit Review
       </button>
     </form>
