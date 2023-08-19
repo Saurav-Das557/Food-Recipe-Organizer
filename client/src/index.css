@@ -278,3 +278,78 @@ a {
   align-self: flex-end;
   margin-top: auto;
 }
+
+/* External CSS file or inline style */
+/* External CSS file or inline style */
+.info {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: "Arial", sans-serif;
+}
+
+.info h3 {
+  margin: 0;
+  padding: 10px 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.info h3:first-child {
+  margin-top: 0;
+}
+
+.info h3:last-child {
+  margin-bottom: 0;
+}
+
+.info h3 span {
+  color: #6c757d;
+  font-size: 16px;
+}
+
+.form-container-profile {
+  display: relative;
+  place-items: center;
+  height: 100vh;
+}
+
+.form-container-profile form {
+  max-width: 400px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
