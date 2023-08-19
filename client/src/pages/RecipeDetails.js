@@ -3,6 +3,8 @@ import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import ReviewForm from "../components/Form/reviewForm";
+import toast from "react-hot-toast";
 
 const RecipeContainer = styled.div`
   display: flex;
@@ -37,10 +39,49 @@ const RecipeDetails = () => {
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState({});
   const [similarRecipes, setSimilarRecipes] = useState([]);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviews, setReviews] = useState([]);
+
+  const toggleReviewForm = () => {
+    setShowReviewForm(!showReviewForm);
+  };
+
+  const getReviews = async (recipeId) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/review/get-review/${recipeId}`
+      );
+      setReviews(response.data.reviews);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
 
   useEffect(() => {
-    if (params?.slug) getRecipe();
+    if (params?.slug) {
+      getRecipe(); // Fetch the recipe details and reviews
+    }
   }, [params?.slug]);
+
+  const submitReview = async (reviewData) => {
+    try {
+      // Send the review data to the backend API
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/api/v1/review/create-review/${recipe._id}`,
+        reviewData
+      );
+      if (response.data.success) {
+        // Refresh the list of reviews after successful submission
+        getReviews(recipe._id); // Fetch reviews for the current recipe
+        setShowReviewForm(false); // Hide the review form
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      toast.error("Failed to submit review");
+    }
+  };
 
   const getRecipe = async () => {
     try {
@@ -49,6 +90,7 @@ const RecipeDetails = () => {
       );
       setRecipe(data?.recipe);
       getSimilarRecipes(data?.recipe._id, data?.recipe.strCategory._id);
+      getReviews(data?.recipe._id); // Fetch reviews for the current recipe
     } catch (error) {
       console.log(error);
     }
@@ -106,6 +148,44 @@ const RecipeDetails = () => {
         </TextContainer>
       </RecipeContainer>
       <hr />
+      <h3 className="mb-3">Comment and Review Section</h3>
+      <div className="review-section mb-3">
+        <div className="row">
+          <button className="btn btn-primary mb-5" onClick={toggleReviewForm}>
+            Write a Review
+          </button>
+          {showReviewForm && <ReviewForm handleSubmit={submitReview} />}
+        </div>
+        <div className="row">
+          <h6>Reviews</h6>
+          {reviews.map((review) => {
+            const createdAt = new Date(review.createdAt);
+            const currentTime = new Date();
+            const timeDifference = (currentTime - createdAt) / 1000; // Time difference in seconds
+
+            let timeAgo;
+            if (timeDifference < 60) {
+              timeAgo = `posted ${Math.floor(timeDifference)} seconds ago`;
+            } else if (timeDifference < 3600) {
+              timeAgo = `posted ${Math.floor(timeDifference / 60)} minutes ago`;
+            } else if (timeDifference < 86400) {
+              timeAgo = `posted ${Math.floor(timeDifference / 3600)} hours ago`;
+            } else {
+              timeAgo = `posted ${Math.floor(timeDifference / 86400)} days ago`;
+            }
+
+            return (
+              <div key={review._id} className="review">
+                <p>Rating: {review.rating}</p>
+                <p>Text: {review.text}</p>
+                <p className="review-time">{timeAgo}</p>
+                <hr />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="row">
         <h6>Similar Recipes</h6>
         {similarRecipes.length < 1 && (
