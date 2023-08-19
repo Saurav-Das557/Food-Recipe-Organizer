@@ -5,9 +5,12 @@ import { Checkbox, Radio } from "antd";
 import { Areas } from "../components/Areas";
 import SearchInput from "../components/Form/SearchInput";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useFavorite } from "../context/favorites";
+import toast from "react-hot-toast";
 
 const OwnRecipes = () => {
   const navigate = useNavigate();
+  const [fav, setFav] = useFavorite();
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -179,7 +182,17 @@ const OwnRecipes = () => {
                     >
                       See Details
                     </button>
-                    <button class="btn btn-secondary ms-1">
+                    <button
+                      class="btn btn-secondary ms-1"
+                      onClick={() => {
+                        setFav([...fav, r]);
+                        localStorage.setItem(
+                          "favourites",
+                          JSON.stringify([...fav, r])
+                        );
+                        toast.success("Recipe added to favorites");
+                      }}
+                    >
                       Add to favorites
                     </button>
                   </div>

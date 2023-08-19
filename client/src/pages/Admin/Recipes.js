@@ -5,6 +5,7 @@ import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/Layout/AdminMenu";
 import { Link } from "react-router-dom";
 import "../../styles/recipes.css";
+import SearchInput from "../../components/Form/SearchInput";
 
 const Recipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -32,6 +33,7 @@ const Recipes = () => {
         </div>
         <div className="col-md-9">
           <h1 className="text-center">All Recipes</h1>
+          <SearchInput />
           <div className="d-flex flex-wrap custom-card-container">
             {recipes?.map((r) => (
               <Link
@@ -44,10 +46,13 @@ const Recipes = () => {
                     src={`${process.env.REACT_APP_API}/api/v1/meal/meal-photo/${r._id}`}
                     className="card-img-top"
                     alt={r.strMeal}
+                    style={{ height: "300px", width: "100%" }}
                   />
                   <div className="card-body">
                     <h5 className="card-title">{r.strMeal}</h5>
-                    <p className="card-text">{r.strInstructions}</p>
+                    <p className="card-text">
+                      {r.strInstructions.substring(0, 30)}
+                    </p>
                   </div>
                 </div>
               </Link>

@@ -25,6 +25,7 @@ import UpdateRecipe from "./pages/Admin/UpdateRecipe";
 import OwnRecipes from "./pages/OwnRecipes";
 import MealSearch from "./pages/MealSearch";
 import RecipeDetails from "./pages/RecipeDetails";
+import FavoritePage from "./pages/FavoritePage";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/recipe/:slug" element={<RecipeDetails />} />
           <Route path="/search" element={<MealSearch />} />
+          <Route path="/favorites" element={<FavoritePage />} />
           <Route path="/cuisine/:type" element={<Cuisine />} />
           <Route path="/searched/:search" element={<Searched />} />
           <Route path="/recipe/:name" element={<Recipe />} />

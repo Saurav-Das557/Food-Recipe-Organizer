@@ -2,8 +2,11 @@ import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../../context/Auth";
 import toast from "react-hot-toast";
+import { useFavorite } from "../../context/favorites";
+import { Badge } from "antd";
 
 const Header = () => {
+  const [fav] = useFavorite();
   const [auth, setAuth] = useAuth();
   const handleLogout = () => {
     setAuth({
@@ -66,9 +69,11 @@ const Header = () => {
                     </NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink to="/favorites" className="nav-link">
-                      Favorites (0)
-                    </NavLink>
+                    <Badge count={fav?.length} showZero>
+                      <NavLink to="/favorites" className="nav-link">
+                        <span className="favorite-text">Favorites</span>
+                      </NavLink>
+                    </Badge>
                   </li>
                   <li className="nav-item dropdown">
                     <NavLink

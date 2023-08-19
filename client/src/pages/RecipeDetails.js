@@ -176,8 +176,8 @@ const RecipeDetails = () => {
 
             return (
               <div key={review._id} className="review">
-                <p>Rating: {review.rating}</p>
-                <p>Text: {review.text}</p>
+                <p>Rating: {review.rating} out of 10</p>
+                <p>Comment: {review.text}</p>
                 <p className="review-time">{timeAgo}</p>
                 <hr />
               </div>
