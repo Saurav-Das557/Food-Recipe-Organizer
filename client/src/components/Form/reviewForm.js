@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 
 const ReviewForm = ({ handleSubmit }) => {
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState(0); // Initialize with 0 (bad)
   const [text, setText] = useState("");
+
+  const ratingOptions = [
+    { value: 0, label: "Bad" },
+    { value: 1, label: "Below Average" },
+    { value: 2, label: "Average" },
+    { value: 3, label: "Good" },
+    { value: 4, label: "Very Good" },
+    { value: 5, label: "Excellent" },
+  ];
 
   const submitReview = (e) => {
     e.preventDefault();
@@ -15,16 +24,18 @@ const ReviewForm = ({ handleSubmit }) => {
   return (
     <form onSubmit={submitReview}>
       <div className="mb-3">
-        <label>Rating: </label>
-        <input
-          type="number"
+        <label className="mb-2">Rating: </label>
+        <select
           className="form-control"
           value={rating}
-          onChange={(e) => setRating(e.target.value)}
-          min={1}
-          max={10}
-          placeholder="Rate this recipe from 1 to 10"
-        />
+          onChange={(e) => setRating(parseInt(e.target.value, 10))}
+        >
+          {ratingOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.value} - {option.label}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="mb-3">
         <label>Review: </label>
