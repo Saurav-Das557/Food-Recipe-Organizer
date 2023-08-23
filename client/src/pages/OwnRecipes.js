@@ -7,9 +7,10 @@ import SearchInput from "../components/Form/SearchInput";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useFavorite } from "../context/favorites";
 import toast from "react-hot-toast";
-
+import { useAuth } from "../context/Auth";
 
 const OwnRecipes = () => {
+  const [auth] = useAuth();
   const navigate = useNavigate();
   const [fav, setFav] = useFavorite();
   const [recipes, setRecipes] = useState([]);
@@ -40,14 +41,18 @@ const OwnRecipes = () => {
   }, []);
 
   //get recipes
-  const getAllRecipes = async () => {
+  const getAllRecipes = async (currentPage = 1) => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/meal/recipe-list/${page}`
+        `${process.env.REACT_APP_API}/api/v1/meal/recipe-list/${currentPage}`
       );
+      if (currentPage === 1) {
+        setRecipes(data.recipes);
+      } else {
+        setRecipes((prev) => [...prev, ...data.recipes]);
+      }
       setLoading(false);
-      setRecipes(data.recipes);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -55,13 +60,18 @@ const OwnRecipes = () => {
   };
 
   useEffect(() => {
-    if (!checked.length || !radio.length) getAllRecipes();
-    // eslint-disable-next-line
-  }, [checked.length, radio.length]);
+    // When no filters are applied, use pagination
+    if (checked.length === 0 && radio.length === 0) {
+      getAllRecipes(page);
+    }
+  }, [page]);
 
   useEffect(() => {
-    if (checked.length || radio.length) filterRecipes();
-    // eslint-disable-next-line
+    if (checked.length > 0 || radio.length > 0) {
+      filterRecipes();
+    } else {
+      getAllRecipes(1);
+    }
   }, [checked, radio]);
 
   //get Total Count
@@ -199,18 +209,22 @@ const OwnRecipes = () => {
                 </div>
               ))}
             </div>
-            <div className="m-2 p-3">
-              {recipes && recipes.length < total && (
-                <button
-                  className="btn btn-warning text-center"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setPage(page + 1);
-                  }}
-                >
-                  {loading ? "Loading ..." : "Load More..."}
-                </button>
-              )}
+            <div className="m-2 p-3 d-flex justify-content-center">
+              {recipes &&
+                recipes.length < total &&
+                !checked.length &&
+                !radio.length && (
+                  <button
+                    className="btn btn-warning text-center"
+                    style={{ transform: "translateX(-75%)" }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setPage(page + 1);
+                    }}
+                  >
+                    {loading ? "Loading ..." : "Load More..."}
+                  </button>
+                )}
             </div>
           </div>
         </div>

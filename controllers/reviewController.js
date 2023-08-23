@@ -1,4 +1,5 @@
 import reviewModel from "../models/reviewModel.js";
+import userModel from "../models/userModel.js";
 
 export const createReviewController = async (req, res) => {
   try {
@@ -15,27 +16,6 @@ export const createReviewController = async (req, res) => {
       text,
     });
     console.log(review);
-
-    // Validation
-    // if (!rating) {
-    //   return res.status(400).send({ message: "Rating is required" });
-    // }
-    // if (!text) {
-    //   return res.status(400).send({ message: "Review text is required" });
-    // }
-
-    // // Assuming you have the signed-in user's ID available in req.user._id
-    // const userId = req.user._id;
-
-    // // Assuming you retrieve the recipe ID from the URL or route parameters
-    // const recipeId = req.params.recipeId; // Adjust this according to your actual parameter name
-
-    // Create the review
-    // const review = new reviewModel({
-    //   rating,
-    //   text,
-    // });
-    // console.log(review);
 
     await review.save();
 
@@ -70,6 +50,45 @@ export const getReviewController = async (req, res) => {
     res.status(400).send({
       success: false,
       message: "Error while getting the reviews",
+      error,
+    });
+  }
+};
+
+// delete review
+export const deleteReviewController = async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+    const userId = req.user._id; // Assuming user ID is available in req.user
+    console.log(userId);
+    // Retrieve user's role from the database
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Check if the user is an admin
+    if (user.role !== 1) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized access",
+      });
+    }
+
+    await reviewModel.findByIdAndDelete(reviewId);
+
+    res.status(200).json({
+      success: true,
+      message: "Review deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error while deleting review",
       error,
     });
   }

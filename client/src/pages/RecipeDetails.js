@@ -6,6 +6,7 @@ import styled from "styled-components";
 import ReviewForm from "../components/Form/reviewForm";
 import toast from "react-hot-toast";
 import { useFavorite } from "../context/favorites";
+import { useAuth } from "../context/Auth";
 
 const RecipeContainer = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ const IngredientList = styled.ul`
 `;
 
 const RecipeDetails = () => {
+  const [auth] = useAuth();
   const [fav, setFav] = useFavorite();
   const params = useParams();
   const navigate = useNavigate();
@@ -46,6 +48,10 @@ const RecipeDetails = () => {
 
   const toggleReviewForm = () => {
     setShowReviewForm(!showReviewForm);
+  };
+
+  const navigateToLogin = () => {
+    navigate("/login");
   };
 
   const getReviews = async (recipeId) => {
@@ -82,6 +88,26 @@ const RecipeDetails = () => {
     } catch (error) {
       console.error("Error submitting review:", error);
       toast.error("Failed to submit review");
+    }
+  };
+
+  // delete review
+  const deleteReview = async (reviewId) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API}/api/v1/review/reviews/${reviewId}`
+      );
+
+      if (response.data.success) {
+        // Refresh the list of reviews after successful deletion
+        getReviews(recipe._id); // Fetch reviews for the current recipe
+        toast.success("Review deleted successfully");
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      toast.error("Failed to delete review");
     }
   };
 
@@ -142,20 +168,31 @@ const RecipeDetails = () => {
               })}
             </IngredientList>
           </RecipeDetailsContainer>
-          {recipe.strYoutube && <h6>Youtube Link: {recipe.strYoutube}</h6>}
-          {recipe.strSource && (
-            <h6>Source of this Recipe: {recipe.strSource}</h6>
+          {recipe.strYoutube && (
+            <h6 className="mb-4">Youtube Link: {recipe.strYoutube}</h6>
           )}
-          <button class="btn btn-secondary ms-1" >Add to favorites</button>
+          {recipe.strSource && (
+            <h6 className="mb-4">Source of this Recipe: {recipe.strSource}</h6>
+          )}
+          <button class="btn btn-secondary ms-1">Add to favorites</button>
         </TextContainer>
       </RecipeContainer>
       <hr />
       <h3 className="mb-3">Comment and Review Section</h3>
       <div className="review-section mb-3">
         <div className="row">
-          <button className="btn btn-primary mb-5" onClick={toggleReviewForm}>
+          {auth.user ? (
+            <button className="btn btn-primary mb-5" onClick={toggleReviewForm}>
+              Write a Review
+            </button>
+          ) : (
+            <button className="btn btn-danger mb-5" onClick={navigateToLogin}>
+              Login to Write a Review
+            </button>
+          )}
+          {/* <button className="btn btn-primary mb-5" onClick={toggleReviewForm}>
             Write a Review
-          </button>
+          </button> */}
           {showReviewForm && <ReviewForm handleSubmit={submitReview} />}
         </div>
         <div className="row">
@@ -205,6 +242,16 @@ const RecipeDetails = () => {
                 </p>
 
                 <p className="review-time">{timeAgo}</p>
+
+                {auth.user && auth.user.role === 1 && (
+                  <button
+                    className="btn btn-danger ms-1"
+                    onClick={() => deleteReview(review._id)}
+                  >
+                    Delete
+                  </button>
+                )}
+
                 <hr />
               </div>
             );

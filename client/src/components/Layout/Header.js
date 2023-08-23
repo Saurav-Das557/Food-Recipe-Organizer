@@ -68,7 +68,7 @@ const Header = () => {
                       Meal Plan
                     </NavLink>
                   </li>
-                  <li className="nav-item">
+                  <li className="nav-item m-1 p-1">
                     <Badge count={fav?.length} showZero>
                       <NavLink to="/favorites" className="nav-link">
                         <span className="favorite-text">Favorites</span>

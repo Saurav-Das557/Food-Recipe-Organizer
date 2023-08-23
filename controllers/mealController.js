@@ -73,7 +73,6 @@ export const getRecipeController = async (req, res) => {
       .select("-strMealThumb")
       .select("strCategory")
       .populate("strCategory")
-      .limit(15)
       .sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
@@ -202,7 +201,6 @@ export const updateMealController = async (req, res) => {
     const { strCategory, strMeal } = req.fields;
     const { strMealThumb } = req.files;
 
-    // Check if recipe with given ID exists
     const existingRecipe = await recipeModel.findById(req.params.rid);
 
     if (!existingRecipe) {
@@ -220,7 +218,7 @@ export const updateMealController = async (req, res) => {
 
     if (strMeal) {
       updatedFields.strMeal = strMeal;
-      updatedFields.slug = slugify(strMeal); // Update slug if strMeal is changed
+      updatedFields.slug = slugify(strMeal);
     }
 
     if (req.fields.strInstructions) {
@@ -327,11 +325,7 @@ export const recipeListController = async (req, res) => {
 export const searchRecipeController = async (req, res) => {
   try {
     const { keyword } = req.params;
-
-    // Split the keyword by space to get an array of individual ingredients
     const ingredientArray = keyword ? keyword.split(" ") : [];
-
-    // Build the query for ingredients
     const ingredientQueries = ingredientArray.map((ingredient) => {
       return {
         $or: Array.from({ length: 20 }, (_, index) => ({

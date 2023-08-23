@@ -193,10 +193,13 @@ a {
 
 .ownRecipe .card-body {
   padding: 15px;
+  position: relative;
+  bottom:5px;
+  margin: 5px;
 }
 
 .ownRecipe .card-title {
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 10px;
 }
 
