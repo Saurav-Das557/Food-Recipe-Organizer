@@ -12,6 +12,11 @@ export const requireSignIn = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
+    res.status(404).send({
+      success: false,
+      message: "Error in JWT token",
+      error,
+    });
   }
 };
 
