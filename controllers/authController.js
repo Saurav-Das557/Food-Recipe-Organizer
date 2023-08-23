@@ -198,3 +198,29 @@ export const updateProfileController = async (req, res) => {
     });
   }
 };
+
+
+// get info controller
+export const getController = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({
+      success:false,
+      message:"error while getting user info",
+      error
+    })
+  }
+}

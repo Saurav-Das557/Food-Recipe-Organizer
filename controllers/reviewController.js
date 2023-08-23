@@ -39,7 +39,9 @@ export const getReviewController = async (req, res) => {
     const recipeId = req.params.recipeId;
 
     // Query the database to retrieve reviews for the specified recipe ID
-    const reviews = await reviewModel.find({ recipe: recipeId });
+    const reviews = await reviewModel
+      .find({ recipe: recipeId })
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
