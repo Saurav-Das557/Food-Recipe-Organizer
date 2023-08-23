@@ -3,6 +3,7 @@ import { isAdmin, requireSignIn } from "../middleWares/authMiddleWare.js";
 import {
   createReviewController,
   deleteReviewController,
+  getNameController,
   getReviewController,
 } from "../controllers/reviewController.js";
 
@@ -15,6 +16,9 @@ router.post("/create-review/:recipeId", requireSignIn, createReviewController);
 router.get("/get-review/:recipeId", getReviewController);
 
 // delete review
-router.delete("/reviews/:reviewId", requireSignIn, isAdmin, deleteReviewController);
+router.delete("/reviews/:reviewId", requireSignIn, deleteReviewController);
+
+// get name
+router.get("/get-name", requireSignIn, getNameController)
 
 export default router;

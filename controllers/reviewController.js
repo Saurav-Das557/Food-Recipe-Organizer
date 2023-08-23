@@ -40,7 +40,7 @@ export const getReviewController = async (req, res) => {
 
     // Query the database to retrieve reviews for the specified recipe ID
     const reviews = await reviewModel
-      .find({ recipe: recipeId })
+      .find({ recipe: recipeId }).populate("user")
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -61,8 +61,7 @@ export const getReviewController = async (req, res) => {
 export const deleteReviewController = async (req, res) => {
   try {
     const { reviewId } = req.params;
-    const userId = req.user._id; // Assuming user ID is available in req.user
-    console.log(userId);
+    const userId = req.user._id; 
     // Retrieve user's role from the database
     const user = await userModel.findById(userId);
     if (!user) {
@@ -72,8 +71,16 @@ export const deleteReviewController = async (req, res) => {
       });
     }
 
+    const review = await reviewModel.findById(reviewId);
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: "Review not found",
+      });
+    }
+    
     // Check if the user is an admin
-    if (user.role !== 1) {
+    if (!(user.role === 1 || review.user._id.toString() === userId)) {
       return res.status(403).json({
         success: false,
         message: "Unauthorized access",
@@ -91,6 +98,20 @@ export const deleteReviewController = async (req, res) => {
     res.status(400).send({
       success: false,
       message: "Error while deleting review",
+      error,
+    });
+  }
+};
+
+// get reviewer controller
+
+export const getNameController = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error while getting user name",
       error,
     });
   }

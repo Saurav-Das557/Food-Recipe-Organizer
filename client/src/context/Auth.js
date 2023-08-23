@@ -13,10 +13,12 @@ const AuthProvider = ({ children }) => {
     const data = localStorage.getItem("auth");
     if (data) {
       const parseData = JSON.parse(data);
+      console.log(parseData)
       setAuth({
         ...auth,
         user: parseData.user,
         token: parseData.token,
+      
       });
     }
     //eslint-disable-next-line
