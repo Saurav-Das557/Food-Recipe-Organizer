@@ -46,6 +46,39 @@ const RecipeDetails = () => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviews, setReviews] = useState([]);
 
+  // function sleep(milliseconds) {
+  //   const date = Date.now();
+  //   let currentDate = null;
+  //   do {
+  //     currentDate = Date.now();
+  //   } while (currentDate - date < milliseconds);
+  // }
+
+  // const fetchCurrentUser = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${process.env.REACT_APP_API}/api/v1/auth/get-info`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${auth.token}`,
+  //         },
+  //       }
+  //     );
+  //     return response.data.user;
+  //   } catch (error) {
+  //     console.error("Error fetching user details:", error);
+  //     return null;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const getUserDetails = async () => {
+  //       const user = await fetchCurrentUser();
+  //       setCurrentUser(user);
+  //   };
+  //   getUserDetails();
+  // }, []);
+
   const toggleReviewForm = () => {
     setShowReviewForm(!showReviewForm);
   };
@@ -65,11 +98,7 @@ const RecipeDetails = () => {
     }
   };
 
-  useEffect(() => {
-    if (params?.slug) {
-      getRecipe(); // Fetch the recipe details and reviews
-    }
-  }, [params?.slug]);
+  
 
   const submitReview = async (reviewData) => {
     try {
@@ -123,6 +152,12 @@ const RecipeDetails = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (params?.slug) {
+      getRecipe(); // Fetch the recipe details and reviews
+    }
+  }, [params?.slug]);
 
   const getSimilarRecipes = async (rid, cid) => {
     try {
@@ -224,9 +259,10 @@ const RecipeDetails = () => {
                       fontSize: "23px",
                     }}
                   >
+                    <h3>{review.user.name}</h3>
                     Rating:
                   </span>{" "}
-                  {review.rating} out of 10
+                  {review.rating} out of 5
                 </p>
                 <p>
                   <span
@@ -242,8 +278,7 @@ const RecipeDetails = () => {
                 </p>
 
                 <p className="review-time">{timeAgo}</p>
-
-                {auth.user && auth.user.role === 1 && (
+                {auth.user && (auth.user.role === 1 || auth.user.id === review.user._id) &&  (
                   <button
                     className="btn btn-danger ms-1"
                     onClick={() => deleteReview(review._id)}
