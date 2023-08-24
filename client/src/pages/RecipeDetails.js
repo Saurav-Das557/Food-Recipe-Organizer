@@ -280,7 +280,9 @@ const RecipeDetails = () => {
                       fontSize: "23px",
                     }}
                   >
-                    <h3>{review?.user?.name}</h3>
+                    <h3 style={{ color: "#004d40", fontStyle: "italic", textDecoration: "underline" }}>
+                      {review?.user?.name}'s review
+                    </h3>
                     Rating:
                   </span>{" "}
                   {review.rating} out of 5
