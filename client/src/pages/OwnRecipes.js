@@ -21,6 +21,8 @@ const OwnRecipes = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  const userId = auth.user ? auth.user.id : null;
+
   //get all cat
   const getAllCategory = async () => {
     try {
@@ -195,12 +197,22 @@ const OwnRecipes = () => {
                     <button
                       class="btn btn-secondary ms-1"
                       onClick={() => {
-                        setFav([...fav, r]);
-                        localStorage.setItem(
-                          "favourites",
-                          JSON.stringify([...fav, r])
+                        const isAlreadyFavorited = fav.some(
+                          (recipe) => recipe._id === r._id
                         );
-                        toast.success("Recipe added to favorites");
+
+                        if (isAlreadyFavorited) {
+                          toast('Already in you favorites!', {
+                            icon: '👏',
+                          });
+                        } else {
+                          setFav([...fav, r]);
+                          localStorage.setItem(
+                            `favourites_${auth?.user.id}`,
+                            JSON.stringify([...fav, r])
+                          );
+                          toast.success("Recipe added to favorites");
+                        }
                       }}
                     >
                       Add to favorites

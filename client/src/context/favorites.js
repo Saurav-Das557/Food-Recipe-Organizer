@@ -1,14 +1,23 @@
 import { useState, useContext, createContext, useEffect } from "react";
+import { useAuth } from "./Auth";
 
 const FavoriteContext = createContext();
 const FavoriteProvider = ({ children }) => {
+  const [auth] = useAuth()
   const [fav, setFav] = useState([]);
 
-  useEffect(() => {
-    let existingFavItem = localStorage.getItem("favourites");
-    if (existingFavItem) setFav(JSON.parse(existingFavItem));
-  }, []);
+  const userId = auth.user ? auth.user.id : null;
 
+
+  useEffect(() => {
+    if (userId) {
+      const userFavs = localStorage.getItem(`favourites_${userId}`);
+      setFav(userFavs ? JSON.parse(userFavs) : []);
+    } else {
+      setFav([]);  // Reset to empty if there's no user ID
+    }
+  }, [userId]);
+  
   return (
     <FavoriteContext.Provider value={[fav, setFav]}>
       {children}

@@ -26,8 +26,10 @@ import OwnRecipes from "./pages/OwnRecipes";
 import MealSearch from "./pages/MealSearch";
 import RecipeDetails from "./pages/RecipeDetails";
 import FavoritePage from "./pages/FavoritePage";
+import { useAuth } from "./context/Auth";
 
 function App() {
+  const [auth] = useAuth()
   return (
     <>
       <AnimatePresence mode="wait">
@@ -35,7 +37,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/recipe/:slug" element={<RecipeDetails />} />
           <Route path="/search" element={<MealSearch />} />
-          <Route path="/favorites" element={<FavoritePage />} />
+          <Route path="/favorites" element={<FavoritePage key={auth?.user?.id}/>} />
           <Route path="/cuisine/:type" element={<Cuisine />} />
           <Route path="/searched/:search" element={<Searched />} />
           <Route path="/recipe-api/:name" element={<Recipe />} />

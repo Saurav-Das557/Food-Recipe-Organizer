@@ -16,7 +16,12 @@ const FavoritePage = () => {
       let index = myFav.findIndex((recipe) => recipe._id === rid);
       myFav.splice(index, 1);
       setFav(myFav);
-      localStorage.setItem("favourites", JSON.stringify(myFav));
+      if (auth?.user && auth?.user.id) {
+        localStorage.setItem(`favourites_${auth?.user.id}`, JSON.stringify(myFav));
+      } else {
+        // If for some reason there's no user or user.id, handle appropriately
+        console.warn("No user id available");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -60,6 +65,12 @@ const FavoritePage = () => {
                         {r.strInstructions.substring(0, 300)}...
                       </p>
                       <button
+                      class="btn btn-primary ms-1 p-2 m-2"
+                      onClick={() => navigate(`/recipe/${r.slug}`)}
+                    >
+                      See Details
+                    </button>
+                      <button
                         className="btn btn-danger remove-button"
                         onClick={() => removeFavItem(r._id)}
                       >
@@ -71,48 +82,6 @@ const FavoritePage = () => {
               </div>
             ))}
           </div>
-          {/* <div className="col-md-4 text-center">
-            <h2>Cart Summary</h2>
-            <p>Total | Checkout | Payment</p>
-            <hr />
-            <h4>Total : {totalPrice()} </h4>
-            {auth?.user?.address ? (
-              <>
-                <div className="mb-3">
-                  <h4>Current Address</h4>
-                  <h5>{auth?.user?.address}</h5>
-                  <button
-                    className="btn btn-outline-warning"
-                    onClick={() => navigate("/dashboard/user/profile")}
-                  >
-                    Update Address
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="mb-3">
-                {auth?.token ? (
-                  <button
-                    className="btn btn-outline-warning"
-                    onClick={() => navigate("/dashboard/user/profile")}
-                  >
-                    Update Address
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-outline-warning"
-                    onClick={() =>
-                      navigate("/login", {
-                        state: "/cart",
-                      })
-                    }
-                  >
-                    Plase Login to checkout
-                  </button>
-                )}
-              </div>
-            )}
-          </div> */}
         </div>
       </div>
     </Layout>

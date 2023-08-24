@@ -98,8 +98,6 @@ const RecipeDetails = () => {
     }
   };
 
-  
-
   const submitReview = async (reviewData) => {
     try {
       // Send the review data to the backend API
@@ -170,6 +168,27 @@ const RecipeDetails = () => {
     }
   };
 
+  const handleAddToFavorites = () => {
+    const isAlreadyFavorited = fav.some((item) => item?._id === recipe?._id);
+
+    if (isAlreadyFavorited) {
+      toast("Already in you favorites!", {
+        icon: "👏",
+      });
+    } else {
+      setFav([...fav, recipe]);
+      if (auth?.user && auth?.user.id) {
+        localStorage.setItem(
+          `favourites_${auth?.user.id}`,
+          JSON.stringify([...fav, recipe])
+        );
+      } else {
+        localStorage.setItem("favourites", JSON.stringify([...fav, recipe]));
+      }
+      toast.success("Recipe added to favorites");
+    }
+  };
+
   return (
     <Layout>
       <RecipeContainer className="row container mt-2">
@@ -209,7 +228,9 @@ const RecipeDetails = () => {
           {recipe.strSource && (
             <h6 className="mb-4">Source of this Recipe: {recipe.strSource}</h6>
           )}
-          <button class="btn btn-secondary ms-1">Add to favorites</button>
+          <button class="btn btn-secondary ms-1" onClick={handleAddToFavorites}>
+            Add to favorites
+          </button>
         </TextContainer>
       </RecipeContainer>
       <hr />
@@ -259,7 +280,7 @@ const RecipeDetails = () => {
                       fontSize: "23px",
                     }}
                   >
-                    <h3>{review.user.name}</h3>
+                    <h3>{review?.user?.name}</h3>
                     Rating:
                   </span>{" "}
                   {review.rating} out of 5
@@ -278,14 +299,16 @@ const RecipeDetails = () => {
                 </p>
 
                 <p className="review-time">{timeAgo}</p>
-                {auth.user && (auth.user.role === 1 || auth.user.id === review.user._id) &&  (
-                  <button
-                    className="btn btn-danger ms-1"
-                    onClick={() => deleteReview(review._id)}
-                  >
-                    Delete
-                  </button>
-                )}
+                {auth?.user &&
+                  (auth?.user?.role === 1 ||
+                    auth?.user?.id === review?.user?._id) && (
+                    <button
+                      className="btn btn-danger ms-1"
+                      onClick={() => deleteReview(review._id)}
+                    >
+                      Delete
+                    </button>
+                  )}
 
                 <hr />
               </div>
@@ -310,10 +333,10 @@ const RecipeDetails = () => {
               <div className="card-body">
                 <h5 className="card-title">{r.strMeal}</h5>
                 <p className="card-text">
-                  {r.strInstructions.substring(0, 30)}
+                  {r.strInstructions.substring(0, 30)}...
                 </p>
                 <button
-                  class="btn btn-primary ms-1"
+                  class="btn btn-primary ms-1 m-2"
                   onClick={() => navigate(`/recipe/${r.slug}`)}
                 >
                   See Details
@@ -321,12 +344,22 @@ const RecipeDetails = () => {
                 <button
                   class="btn btn-secondary ms-1"
                   onClick={() => {
-                    setFav([...fav, r]);
-                    localStorage.setItem(
-                      "favourites",
-                      JSON.stringify([...fav, r])
+                    const isAlreadyFavorited = fav.some(
+                      (recipe) => recipe?._id === r._id
                     );
-                    toast.success("Recipe added to favorites");
+
+                    if (isAlreadyFavorited) {
+                      toast("Already in you favorites!", {
+                        icon: "👏",
+                      });
+                    } else {
+                      setFav([...fav, r]);
+                      localStorage.setItem(
+                        `favourites_${auth?.user.id}`,
+                        JSON.stringify([...fav, r])
+                      );
+                      toast.success("Recipe added to favorites");
+                    }
                   }}
                 >
                   Add to favorites
