@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import mealRoute from "./routes/mealRoute.js";
 import reviewRoute from "./routes/reviewRoute.js";
+import userRoute from "./routes/userRoute.js";
 import cors from "cors";
 
 // configure env
@@ -28,6 +29,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoute);
 app.use("/api/v1/meal", mealRoute);
 app.use("/api/v1/review", reviewRoute);
+app.use("/api/v1/user", userRoute)
 
 // rest api
 app.get("/", (req, res) => {
