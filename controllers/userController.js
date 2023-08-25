@@ -54,22 +54,22 @@ export const makeUserAdminController = async (req, res) => {
     }
 
     // Update the user's role to admin
-    user.role = 1;
+    if (user.role === 1) {
+      user.role = 0;
+    } else {
+      user.role = 1;
+    }
     await user.save();
 
-    res
-      .status(200)
-      .send({
-        success: true,
-        message: "User has been made admin successfully.",
-      });
+    res.status(200).send({
+      success: true,
+      message: "User has been made admin successfully.",
+    });
   } catch (error) {
     console.error("Error making user admin:", error);
-    res
-      .status(500)
-      .send({
-        success: false,
-        error: "An error occurred while making the user admin.",
-      });
+    res.status(500).send({
+      success: false,
+      error: "An error occurred while making the user admin.",
+    });
   }
 };

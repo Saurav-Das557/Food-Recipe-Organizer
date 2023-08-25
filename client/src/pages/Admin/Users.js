@@ -22,8 +22,6 @@ const Users = () => {
     axios
       .put(`${process.env.REACT_APP_API}/api/v1/user/make-admin/${userId}`)
       .then((response) => {
-        // Either refresh the user list or update the state directly.
-        // Here, I'm opting to refresh the user list.
         return axios.get(
           `${process.env.REACT_APP_API}/api/v1/user/get-all-users`
         );
@@ -44,7 +42,8 @@ const Users = () => {
         </div>
         <div className="col-md-9">
           <h1>All users</h1>
-          <table className="table">
+          <div className="table-responsive">
+          <table className="table table-bordered table-hover">
             <thead>
               <tr>
                 <th>Name</th>
@@ -61,16 +60,16 @@ const Users = () => {
                   <td>{user?.role === 1 ? "Yes" : "No"} </td>
                   <td>
                     {!user?.isAdmin && (
-                      <button onClick={() => makeAdmin(user._id)}>
-                        Make Admin
+                      <button className="btn btn-outline-success" onClick={() => makeAdmin(user._id)}>
+                        {user?.role === 1 ? "Remove Admin" : "Make Admin"}
                       </button>
                     )}
-                    {/* Additional actions like banning can be added here later */}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </Layout>
