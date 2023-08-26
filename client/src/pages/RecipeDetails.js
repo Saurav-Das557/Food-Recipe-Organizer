@@ -169,6 +169,12 @@ const RecipeDetails = () => {
   };
 
   const handleAddToFavorites = () => {
+    if (!auth || !auth.user) {
+      toast("You need to log in to add recipes to favorites!", {
+        icon: "❌",
+      });
+      return;
+    }
     const isAlreadyFavorited = fav.some((item) => item?._id === recipe?._id);
 
     if (isAlreadyFavorited) {
@@ -280,7 +286,13 @@ const RecipeDetails = () => {
                       fontSize: "23px",
                     }}
                   >
-                    <h3 style={{ color: "#004d40", fontStyle: "italic", textDecoration: "underline" }}>
+                    <h3
+                      style={{
+                        color: "#004d40",
+                        fontStyle: "italic",
+                        textDecoration: "underline",
+                      }}
+                    >
                       {review?.user?.name}'s review
                     </h3>
                     Rating:
@@ -346,8 +358,14 @@ const RecipeDetails = () => {
                 <button
                   class="btn btn-secondary ms-1"
                   onClick={() => {
+                    if (!auth || !auth.user) {
+                      toast("You need to log in to add recipes to favorites!", {
+                        icon: "❌",
+                      });
+                      return;
+                    }
                     const isAlreadyFavorited = fav.some(
-                      (recipe) => recipe?._id === r._id
+                      (recipe) => recipe._id === r._id
                     );
 
                     if (isAlreadyFavorited) {

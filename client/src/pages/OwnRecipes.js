@@ -197,13 +197,23 @@ const OwnRecipes = () => {
                     <button
                       class="btn btn-secondary ms-1"
                       onClick={() => {
+                        if (!auth || !auth.user) {
+                          toast(
+                            "You need to log in to add recipes to favorites!",
+                            {
+                              icon: "❌",
+                            }
+                          );
+                          return;
+                        }
+
                         const isAlreadyFavorited = fav.some(
                           (recipe) => recipe._id === r._id
                         );
 
                         if (isAlreadyFavorited) {
-                          toast('Already in you favorites!', {
-                            icon: '👏',
+                          toast("Already in you favorites!", {
+                            icon: "👏",
                           });
                         } else {
                           setFav([...fav, r]);

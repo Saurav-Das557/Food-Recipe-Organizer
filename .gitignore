@@ -132,3 +132,4 @@ dist
 .pnp.*
 controllers/updateCategory.js
 controllers/addSlugs.js
+controllers/migrateAddStatus.js
